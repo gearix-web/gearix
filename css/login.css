@@ -1,0 +1,388 @@
+/* ==========================================================================
+   Machine Repair Co. — Industrial Workshop theme (v2)
+   Palette : --graphite #1C1F22   --steel #2B3136   --steel-2 #383F45
+             --paper #F6F4EF      --line #E7E2D8    --ink #1C1F22
+             --slate #6B7280      --yellow #F2B705  --orange #E8590C
+   Type    : Display → 'Oswald'          (condensed, industrial headings/labels)
+             Thai    → 'Sarabun'         (body copy, form text)
+             Data    → 'IBM Plex Mono'   (gauges, stats, ticket refs)
+   Signature: rotating gear mark + diagonal hazard-stripe accent bar
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  --graphite:#1C1F22;
+  --steel:#2B3136;
+  --steel-2:#383F45;
+  --paper:#F6F4EF;
+  --line:#E7E2D8;
+  --ink:#1C1F22;
+  --slate:#6B7280;
+  --yellow:#F2B705;
+  --yellow-dark:#cf9c04;
+  --orange:#E8590C;
+  --orange-dark:#c44a08;
+}
+
+*{ box-sizing:border-box; }
+
+html,body{
+  height:100%;
+  margin:0;
+  background:var(--graphite);
+  font-family:'Sarabun','Oswald',sans-serif;
+  color:var(--ink);
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2.5rem 1.25rem;
+}
+
+/* ---------- intro / loading screen ---------- */
+#loading{
+  position:fixed; inset:0; z-index:999;
+  display:flex; align-items:center; justify-content:center;
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,.02) 0 2px, transparent 2px 10px),
+    radial-gradient(circle at 50% 40%, var(--steel-2) 0%, var(--graphite) 72%);
+  opacity:1;
+  transition:opacity .5s ease;
+}
+#loading.hide{ opacity:0; pointer-events:none; }
+
+.intro-inner{
+  display:flex; flex-direction:column; align-items:center;
+  animation:introRise .6s ease both;
+}
+@keyframes introRise{
+  from{ opacity:0; transform:translateY(14px) scale(.97); }
+  to{ opacity:1; transform:translateY(0) scale(1); }
+}
+
+.intro-gear{
+  font-size:3.25rem;
+  color:var(--yellow);
+  animation:spin 2.4s linear infinite;
+  filter:drop-shadow(0 0 14px rgba(242,183,5,.35));
+  margin-bottom:.9rem;
+}
+
+.intro-brand{
+  font-family:'Oswald',sans-serif;
+  font-weight:600;
+  font-size:1.4rem;
+  letter-spacing:.04em;
+  color:#fff;
+}
+.intro-brand span{
+  color:var(--yellow);
+  margin-left:.4rem;
+}
+
+.intro-sub{
+  font-family:'Oswald',sans-serif;
+  font-size:.7rem;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--slate);
+  margin-top:.35rem;
+}
+
+.intro-bar{
+  width:170px; height:3px; border-radius:2px;
+  background:rgba(255,255,255,.08);
+  overflow:hidden;
+  margin-top:1.4rem;
+}
+.intro-bar-fill{
+  height:100%; width:40%; border-radius:2px;
+  background:linear-gradient(90deg, var(--yellow), var(--orange));
+  animation:introBar 1.1s ease-in-out infinite;
+}
+@keyframes introBar{
+  0%{ transform:translateX(-100%); }
+  100%{ transform:translateX(350%); }
+}
+
+/* ---------- particles backdrop ---------- */
+#particles-js{
+  position:fixed; inset:0; z-index:-1;
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,.015) 0 2px, transparent 2px 10px),
+    var(--graphite);
+}
+
+/* ---------- card shell ---------- */
+.card-box{
+  width:100%;
+  max-width:980px;
+  border:none;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 30px 70px -22px rgba(0,0,0,.55), 0 2px 8px rgba(0,0,0,.15);
+}
+
+.card-box .row.g-0{
+  min-height:580px;
+}
+
+/* ---------- LEFT: workshop panel ---------- */
+.left-side{
+  position:relative;
+  padding:2.9rem 2.6rem 2.4rem;
+  background:
+    linear-gradient(175deg, var(--graphite) 0%, var(--steel) 55%, var(--steel-2) 100%);
+  overflow:hidden;
+}
+
+/* hazard stripe accent bar along the top */
+.left-side::before{
+  content:"";
+  position:absolute; top:0; left:0; right:0; height:10px;
+  background:repeating-linear-gradient(
+    -45deg,
+    var(--yellow) 0 14px,
+    var(--ink) 14px 28px
+  );
+}
+
+/* faint brushed-metal texture */
+.left-side::after{
+  content:"";
+  position:absolute; inset:0;
+  background-image:repeating-linear-gradient(180deg, rgba(255,255,255,.025) 0 1px, transparent 1px 3px);
+  pointer-events:none;
+}
+
+/* rivet bolts at panel corners */
+.rivet{
+  position:absolute;
+  width:9px; height:9px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #cfd3d6, #6b7176 65%, #35393d);
+  box-shadow:0 1px 2px rgba(0,0,0,.6);
+  z-index:2;
+}
+.rivet-tl{ top:24px; left:16px; }
+.rivet-tr{ top:24px; right:16px; }
+.rivet-bl{ bottom:16px; left:16px; }
+.rivet-br{ bottom:16px; right:16px; }
+
+.left-content{ position:relative; z-index:2; margin-top:.6rem; }
+
+.brand-mark{
+  display:flex; align-items:center; gap:.6rem;
+  margin-bottom:1.5rem;
+}
+.gear-icon{
+  font-size:1.5rem;
+  color:var(--yellow);
+  animation:spin 9s linear infinite;
+  display:inline-block;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+.brand-mark .name{
+  font-family:'Oswald',sans-serif;
+  font-weight:600;
+  font-size:1.2rem;
+  letter-spacing:.02em;
+  color:#fff;
+  text-transform:uppercase;
+}
+
+.eyebrow-tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.66rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:#9aa3ab;
+  margin-bottom:1.4rem;
+}
+
+.left-side h3#typed{
+  font-family:'Oswald',sans-serif;
+  font-weight:600;
+  font-size:1.7rem;
+  line-height:1.28;
+  letter-spacing:.01em;
+  color:#fff;
+  margin:0 0 .5rem;
+  min-height:2.5em;
+  text-transform:uppercase;
+}
+.left-side h3#typed::after{
+  content:"";
+  border-right:3px solid var(--yellow);
+  margin-left:2px;
+}
+
+.left-subcopy{
+  color:#b7bec4;
+  font-size:.95rem;
+  line-height:1.75;
+  max-width:34ch;
+  margin-top:.4rem;
+}
+
+/* decorative machine-status readout */
+.gauge-row{
+  position:relative; z-index:2;
+  display:flex;
+  gap:1.6rem;
+  margin-top:2.2rem;
+  padding-top:1.4rem;
+  border-top:1px solid rgba(255,255,255,.12);
+}
+.gauge{
+  font-family:'IBM Plex Mono',monospace;
+}
+.gauge .val{
+  font-size:1.05rem;
+  font-weight:500;
+  color:var(--yellow);
+  line-height:1.2;
+}
+.gauge .cap{
+  font-size:.62rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#8b939b;
+  margin-top:.25rem;
+}
+
+/* ---------- RIGHT: form panel ---------- */
+.col-md-7{
+  background:var(--paper);
+  padding:3.2rem 3rem !important;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.panel-eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.68rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--slate);
+  margin-bottom:.35rem;
+}
+.panel-heading{
+  font-family:'Oswald',sans-serif;
+  font-weight:600;
+  font-size:1.55rem;
+  text-transform:uppercase;
+  letter-spacing:.01em;
+  color:var(--ink);
+  margin-bottom:1.6rem;
+}
+
+/* tabs → segmented control */
+.nav-tabs{
+  border:none;
+  background:#EAE6DC;
+  border-radius:8px;
+  padding:5px;
+  gap:4px;
+}
+.nav-tabs .nav-link{
+  border:none;
+  border-radius:5px;
+  font-family:'Oswald',sans-serif;
+  font-weight:500;
+  font-size:.9rem;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+  color:var(--slate);
+  padding:.6rem 1rem;
+  transition:all .15s ease;
+}
+.nav-tabs .nav-link:hover{
+  color:var(--ink);
+}
+.nav-tabs .nav-link.active{
+  background:var(--ink);
+  color:var(--yellow);
+  box-shadow:0 4px 10px -4px rgba(0,0,0,.5);
+}
+
+/* inputs */
+.form-control{
+  border:1.5px solid var(--line);
+  border-radius:6px;
+  padding:.72rem .95rem;
+  font-size:.95rem;
+  color:var(--ink);
+  background:#fff;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.form-control::placeholder{ color:#9a978d; }
+.form-control:focus{
+  border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(232,89,12,.14);
+}
+
+.mb-3{ margin-bottom:1.1rem !important; }
+
+/* buttons */
+.btn{
+  font-family:'Oswald',sans-serif;
+  font-weight:600;
+  font-size:.95rem;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  padding:.75rem 1rem;
+  border-radius:6px;
+  border:none;
+  margin-top:1.5rem;
+  transition:transform .12s ease, box-shadow .12s ease, background .15s ease;
+}
+.btn-primary{
+  background:var(--orange);
+  color:#fff;
+}
+.btn-primary:hover{
+  background:var(--orange-dark);
+  color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 8px 16px -6px rgba(232,89,12,.5);
+}
+.btn-success{
+  background:var(--ink);
+  color:var(--yellow);
+}
+.btn-success:hover{
+  background:#000;
+  transform:translateY(-1px);
+  box-shadow:0 8px 16px -6px rgba(0,0,0,.45);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:767.98px){
+  .card-box .row.g-0{ min-height:0; }
+  .left-side{ padding:2.4rem 1.75rem 2rem; }
+  .col-md-7{ padding:2.25rem 1.75rem !important; }
+  .left-subcopy{ max-width:none; }
+  .gauge-row{ flex-wrap:wrap; row-gap:1rem; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  .gear-icon{ animation:none; }
+  .left-side h3#typed::after{ display:none; }
+}
+
+/* ---------- focus visibility ---------- */
+a:focus-visible,
+button:focus-visible,
+.form-control:focus-visible{
+  outline:2px solid var(--orange);
+  outline-offset:2px;
+}
